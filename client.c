@@ -26,7 +26,7 @@ int main()
 	}
 
 	remote_server.sin_family = AF_INET;
-	remote_server.sin_port = htons(1000);
+	remote_server.sin_port = htons(23);
 	remote_server.sin_addr.s_addr = INADDR_ANY;
 	bzero(&remote_server.sin_zero,8);
 
