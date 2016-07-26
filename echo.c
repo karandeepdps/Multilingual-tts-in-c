@@ -33,8 +33,8 @@ int main()
 	}
 
 	server.sin_family = AF_INET;
-	server.sin_port   = htons(23);
-	server.sin_addr.s_addr = inet_addr("192.168.1.2");
+	server.sin_port   = htons(1000);
+	server.sin_addr.s_addr = INADDR_ANY;
 	bzero(&server.sin_zero, 8);
 
 	len = sizeof(struct sockaddr_in);
