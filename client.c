@@ -9,19 +9,27 @@
 
 
 #define ERROR -1
-#define BUFFER 1024
+
+int playSound( char *filename ) 
+{ char command[256]; int status; 
+ /* create command to execute */ 
+ sprintf( command, "afplay %s -r 10", filename );
+   /* play sound */ status = system( command ); 
+    return status; 
+}
+
+
 
 int main()
 {
 	
 
 	FILE *fp;
-	char a[10];
+	char a[10],mesg[1000];
 	
 	struct sockaddr_in remote_server;
 	int sock;
-	char input[BUFFER];
-	char output[BUFFER];
+	
 	int len;
 
 	if((sock = socket(AF_INET, SOCK_STREAM, 0)) == ERROR)
@@ -31,7 +39,7 @@ int main()
 	}
 
 	remote_server.sin_family = AF_INET;
-	remote_server.sin_port = htons(14);
+	remote_server.sin_port = htons(110);
 	remote_server.sin_addr.s_addr = INADDR_ANY;
 	bzero(&remote_server.sin_zero,8);
 
@@ -42,16 +50,48 @@ int main()
 
 	}
 
-	while(1)
-	{
-		fgets(input,BUFFER,stdin);
-		send(sock,input,strlen(input),0);
+	int data_len = 1;
 
-		len = recv(sock,output,BUFFER,0);
-		output[len] = '\0';
-		printf("%s\n",output);
+		while(data_len)
+		{
+		data_len=recv(sock, mesg, 10000, 0);
+		
+		
+		
+		mesg[data_len]='\0';
+		printf("Sent Mesg: %s \n",mesg);
+		
+					
+					//
 
-	}
+						char word[256];
+        				int i = 0, j = 0;
+
+					while (mesg[i] != '\0') {
+                if (mesg[i] == ' ') {
+                	word[j]='.';
+                	word[j+1]='m';
+                	word[j+2]='p';
+                	word[j+3]='3';
+                        word[j+4] = '\0';
+
+                        printf("%s\n", word);
+                        playSound(word);
+                        j = 0;
+                } else {
+                        word[j++] = mesg[i];
+                }
+                i++;
+        }
+					//
+		
+		memset(mesg,0,sizeof(mesg));
+		
+		
+		}
+
+
+	
 	close(sock);
 
 	return 0;
