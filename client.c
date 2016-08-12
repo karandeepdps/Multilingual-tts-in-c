@@ -1,11 +1,11 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
-     #include <sys/socket.h>
-     #include<netinet/in.h>
-		#include<errno.h> // for perror function
-		#include <arpa/inet.h>
-			#include<string.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <errno.h> // for perror function
+#include <arpa/inet.h>
+#include <string.h>
 
 
 #define ERROR -1
@@ -13,6 +13,11 @@
 
 int main()
 {
+	
+
+	FILE *fp;
+	char a[10];
+	
 	struct sockaddr_in remote_server;
 	int sock;
 	char input[BUFFER];
@@ -26,7 +31,7 @@ int main()
 	}
 
 	remote_server.sin_family = AF_INET;
-	remote_server.sin_port = htons(23);
+	remote_server.sin_port = htons(14);
 	remote_server.sin_addr.s_addr = INADDR_ANY;
 	bzero(&remote_server.sin_zero,8);
 
