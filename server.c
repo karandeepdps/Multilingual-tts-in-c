@@ -162,11 +162,12 @@ int main()
              // fgets cause loop to skip input string on first iteration
                 
               if(client_socket[num]>0){
-              	printf("Selected client is %d\n",i);
+              	printf("Selected client is %d\n",num);
 
 					printf("enter string to send\n");
                    
                     fgets(input,BUFFER,stdin);
+                   
                    
                     send(sd , input , strlen(input) , 0 );
                 }
@@ -192,6 +193,28 @@ int main()
 
  			else if(in==3)
  			{
+ 				printf("Enter Speaker no\n");
+				int num;
+				scanf("%d",&num);
+             sd = client_socket[num];
+
+             printf("Enter 0 for hindi 1 for english\n");
+ 				int in;
+ 				scanf("%d",&in);
+ 				if(in==0){
+ 					input[0]='L';input[1]='E';input[2]='N';input[3]='H';
+ 				}
+
+ 					else{
+ 						input[0]='L';input[1]='E';input[2]='N';input[3]='E';
+ 					}
+             
+                
+              if(client_socket[num]>0){
+              	printf("Changing language of client no %d\n",num);
+                send(sd , input , strlen(input) , 0 );
+                }
+ 				
 
 
  			}
