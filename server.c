@@ -10,7 +10,6 @@
 #include <unistd.h>
 //reference http://www.binarytides.com/multiple-socket-connections-fdset-select-linux/
 
-//adress ==server
 
 
 #define BUFFER 1024
@@ -33,7 +32,7 @@ int main()
     fd_set readfds;
 
     //a message
-    char *message = "ECHO Daemon v1.0 \r\n";
+    char *message = "Karandeepdps@gmail.com \r\n";
 
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++) 
@@ -146,15 +145,16 @@ int main()
         }
         
             printf("What you want to do\n");
-            printf("1) Send message\n");
+            printf("1) Send Message\n");
             printf("2) List Speakers\n");
+            printf("3) Change Language\n");
             int in;
             scanf("%d",&in);
             if(in==1)
             {
 //for (i = -1; i < max_clients; i++) 
 //{
-	printf("Enter Speaker no\n");
+	printf("Enter Speaker no and message\n");
 	int num;
 	scanf("%d",&num);
              sd = client_socket[num];
@@ -180,11 +180,19 @@ int main()
  				{
  					if(client_socket[i]>0)
  					{
+ 						sd = client_socket[i];
  					getpeername(sd , (struct sockaddr*)&server , (socklen_t*)&addrlen);
                     printf("Speaket at , ip %s , port %d \n" , inet_ntoa(server.sin_addr) , ntohs(server.sin_port));
                       
               		}
  				}
+
+ 			}
+
+
+ 			else if(in==3)
+ 			{
+
 
  			}
 
