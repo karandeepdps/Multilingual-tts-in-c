@@ -6,6 +6,7 @@
 #include <errno.h> // for perror function
 #include <arpa/inet.h>
 #include <string.h>
+#include <unistd.h>
 
 
 #define ERROR -1
@@ -71,7 +72,10 @@ int main()
 		
 		
 		
+		
+		mesg[data_len-1]=' ';
 		mesg[data_len]='\0';
+		  
 		printf("Sent Mesg: %s \n",mesg);
 		
 					
@@ -81,7 +85,10 @@ int main()
         				int i = 0, j = 0;
 
 					while (mesg[i] != '\0') {
-                if (mesg[i] == ' ' && flag ==0) {
+						
+					
+                if (((mesg[i] == ' ') && (flag ==0))) {
+                	printf("hahah\n");
                 	word[j]='.';
                 	word[j+1]='m';
                 	word[j+2]='p';
@@ -92,7 +99,7 @@ int main()
                         playSound(word);
                         j = 0;
                 }
-                 else if (mesg[i] == ' ' && flag ==1) {
+                 else if (((mesg[i] == ' ') && (flag ==1))) {
                  	word[j]='_';
                  	word[j+1]='e';
                  	word[j+2]='n';
@@ -102,7 +109,7 @@ int main()
                 	word[j+6]='3';
                         word[j+7] = '\0';
 
-                        printf("word=%s\n", word);
+                        printf("wordr=%s\n", word);
                         playSound(word);
                         j = 0;
                 }  

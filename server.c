@@ -167,7 +167,11 @@ int main()
 					printf("enter string to send\n");
                    
                     fgets(input,BUFFER,stdin);
-                   
+                  //printf("%c\n",input[0]);
+                    //printf("%c\n",input[1]);
+                    //printf("2=%c\n",input[2]);
+                    //printf("3=%c\n",input[3]);
+                   //printf("strlen==%lu\n",strlen(input));
                    
                     send(sd , input , strlen(input) , 0 );
                 }
