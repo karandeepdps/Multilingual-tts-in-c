@@ -175,7 +175,7 @@ int main()
                    
                     send(sd , input , strlen(input) , 0 );
                 }
-              
+              system("clear");
      	 
  //}
  			}
@@ -191,6 +191,7 @@ int main()
                       
               		}
  				}
+ 				 system("clear");
 
  			}
 
@@ -219,7 +220,7 @@ int main()
                 send(sd , input , strlen(input) , 0 );
                 }
  				
-
+                 system("clear");
 
  			}
 
