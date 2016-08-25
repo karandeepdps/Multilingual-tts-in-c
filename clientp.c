@@ -93,7 +93,7 @@ int main()
                 	word[j+1]='m';
                 	word[j+2]='p';
                 	word[j+3]='3';
-                        word[j+4] = '\0';
+                    word[j+4] = '\0';
 
                         printf("wordd=%s\n", word);
                         playSound(word);
@@ -107,7 +107,7 @@ int main()
                 	word[j+4]='m';
                 	word[j+5]='p';
                 	word[j+6]='3';
-                        word[j+7] = '\0';
+                    word[j+7] = '\0';
 
                         printf("wordr=%s\n", word);
                         playSound(word);

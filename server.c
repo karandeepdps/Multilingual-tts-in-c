@@ -11,7 +11,6 @@
 //reference http://www.binarytides.com/multiple-socket-connections-fdset-select-linux/
 
 
-
 #define BUFFER 1024
 
 int main()
@@ -48,11 +47,47 @@ int main()
 		exit(-1);
 	}
 
-  if( setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0 )
+
+
+/*
+Sometimes, you might notice, you try to rerun a server and bind() fails, claiming 
+“Address already in use.” What does that mean? Well, a little bit of a socket that 
+was connected is still hanging around in the kernel, and it's hogging the port. You 
+can either wait for it to clear (a minute or so), or add code to your program allowing
+ it to reuse the port, like this:
+*/
+
+ 
+int yes=1;
+  if( setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &yes,sizeof yes) == -1)
     {
         perror("setsockopt");
         exit(EXIT_FAILURE);
     }
+
+
+        //AF_INET (IPv4) or AF_INET6 (IPv6)
+      //struct sockaddr {
+     // unsigned short    sa_family;    // address family, AF_xxx
+     //  char              sa_data[14];  // 14 bytes of protocol address
+    //};
+
+/*
+sa_family can be a variety of things, but it'll be AF_INET (IPv4) or AF_INET6 (IPv6) for everything we do in this document.
+ sa_data contains a destination address and port number for the socket. This is rather unwieldy since you don't want to 
+ tediously pack the address in the sa_data by hand.
+To deal with struct sockaddr, programmers created a parallel structure: 
+struct sockaddr_in (“in” for “Internet”) to be used with IPv4.
+And this is the important bit: a pointer to a struct sockaddr_in can be cast to a pointer to a struct sockaddr and vice-versa. 
+So even though connect() wants a struct sockaddr*, you can still use a struct sockaddr_in and cast it at the last minute!
+struct sockaddr_in {
+    short int          sin_family;  // Address family, AF_INET
+    unsigned short int sin_port;    // Port number
+    struct in_addr     sin_addr;    // Internet address
+    unsigned char      sin_zero[8]; // Same size as struct sockaddr
+};
+*/
+
 	server.sin_family = AF_INET;
 	server.sin_port   = htons(110);
 	server.sin_addr.s_addr = INADDR_ANY;
