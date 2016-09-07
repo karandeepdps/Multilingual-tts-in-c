@@ -1,3 +1,9 @@
+//
+//                          MACBOOK AIR OSX 10.10.5
+//                          KARANDEEPDPS  Target: x86_64-apple-darwin14.5.0 Thread model: posix
+//                          RAS Apple LLVM version 6.1.0 (clang-602.0.53) (based on LLVM 3.6.0svn)
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +16,7 @@
 #include <string.h>
 #include <unistd.h>
 //reference http://www.binarytides.com/multiple-socket-connections-fdset-select-linux/
+//https://www.gnu.org/software/libc/manual/html_node/Waiting-for-I_002fO.html
 
 
 #define BUFFER 1024
@@ -113,11 +120,36 @@ struct sockaddr_in {
 	while(1)
 	{
 
+/*
+Sometimes a program needs to accept input on multiple input channels whenever input arrives. 
+For example, some workstations may have devices such as a digitizing tablet, function button box, 
+or dial box that are connected via normal asynchronous serial interfaces; good user interface style 
+requires responding immediately to input on any device. Another example is a program that acts as a
+ server to several other processes via pipes or sockets.
 
-		 //clear the socket set
+You cannot normally use read for this purpose, because this blocks the program until 
+input is available on one particular file descriptor; input on other channels won’t wake 
+it up. You could set nonblocking mode and poll each file descriptor in turn, but this is very inefficient.
+
+A better solution is to use the select function. This blocks the program until input 
+or output is ready on a specified set of file descriptors, or until a timer expires, 
+whichever comes first. This facility is declared in the header file sys/types.h.
+*/
+
+		 
+
+//Data Type: fd_set
+//The fd_set data type represents file descriptor sets for the select function. It is actually a bit array.
+
+
+        //This macro initializes the file descriptor set set to be the empty set.
         FD_ZERO(&readfds);
   
-        //add master socket to set
+           //add master socket to set
+          //Macro: void FD_SET (int filedes, fd_set *set)
+         //This macro adds filedes to the file descriptor set set.
+        //The filedes parameter must not have side effects since it is evaluated more than once.
+
         FD_SET(sock, &readfds);
         max_sd = sock;
 
@@ -128,6 +160,9 @@ struct sockaddr_in {
             sd = client_socket[i];
              
             //if valid socket descriptor then add to read list
+            //void FD_SET (int filedes, fd_set *set)
+            //This macro adds filedes to the file descriptor set set.
+
             if(sd > 0)
                 FD_SET( sd , &readfds);
              
