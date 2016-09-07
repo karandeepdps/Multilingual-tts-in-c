@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -134,6 +135,18 @@ struct sockaddr_in {
             if(sd > max_sd)
                 max_sd = sd;
         }
+
+        /*
+        int select(int numfds, fd_set *readfds, fd_set *writefds,
+           fd_set *exceptfds, struct timeval *timeout);
+￼The function monitors “sets” of file descriptors; in particular readfds,
+ writefds, and exceptfds. If you want to see if you can read from standard 
+ input and some socket descriptor, sockfd, just add the file descriptors 0 
+ and sockfd to the set readfds. The parameter numfds should be set to the values 
+ of the highest file descriptor plus one. In this example, it should be set to
+  sockfd+1, since it is assuredly higher than standard input (0).
+
+        */
 
          activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
 

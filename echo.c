@@ -39,6 +39,8 @@ int main()
 
 	len = sizeof(struct sockaddr_in);
 
+
+
 	if((bind(sock, (struct sockaddr *)&server,len)) == -1)
 	{
 		perror("bind");
