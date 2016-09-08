@@ -20,6 +20,14 @@ int playSound( char *filename )
     return status; 
 }
 
+int playSound2( char *filename ) 
+{ char command[256]; int status; 
+ /* create command to execute */ 
+ sprintf( command, "open 'http://translate.google.com/translate_tts?client=tw-ob&q=%s&tl=En' ", filename );
+   /* play sound */ status = system( command ); 
+    return status; 
+}
+
 
 
 int main()
@@ -77,14 +85,32 @@ int main()
 		mesg[data_len]='\0';
 		  
 		printf("Sent Mesg: %s \n",mesg);
+
 		
 					
 					//
 
 						char word[256];
+							memset(word,0,sizeof(word));
         				int i = 0, j = 0;
 
-					while (mesg[i] != '\0') {
+        				if (flag==1)
+        				{
+        					int kd=0,jj=0;
+        					while (mesg[kd] != '\0')
+        					{
+        						word[jj]=mesg[kd];
+        						if(mesg[kd]==' ')
+        							word[jj]='+';
+        						kd++;jj++;
+        					}
+        					printf("google string%s\n",word);
+        					playSound2(word);
+        					
+
+        				}
+
+					while (mesg[i] != '\0' && flag==0) {
 						
 					
                 if (((mesg[i] == ' ') && (flag ==0))) {
@@ -99,20 +125,7 @@ int main()
                         playSound(word);
                         j = 0;
                 }
-                 else if (((mesg[i] == ' ') && (flag ==1))) {
-                 	word[j]='_';
-                 	word[j+1]='e';
-                 	word[j+2]='n';
-                	word[j+3]='.';
-                	word[j+4]='m';
-                	word[j+5]='p';
-                	word[j+6]='3';
-                    word[j+7] = '\0';
-
-                        printf("wordr=%s\n", word);
-                        playSound(word);
-                        j = 0;
-                }  
+                
                 else {
                         word[j++] = mesg[i];
                 }
