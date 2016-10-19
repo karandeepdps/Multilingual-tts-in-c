@@ -1,4 +1,4 @@
-#include <stdio.h>
+#inclua#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -23,13 +23,8 @@ int playSound( char *filename )
 int playSound2( char *filename ) 
 { char command[256]; int status; 
  /* create command to execute */ 
-	printf("Processing\n");
- sprintf( command, "wget -q -U Mozilla -O output.mp3 'http://translate.google.com/translate_tts?client=tw-ob&q=%s&tl=En' ", filename );
-
+ sprintf( command, "open 'http://translate.google.com/translate_tts?client=tw-ob&q=%s&tl=En' ", filename );
    /* play sound */ status = system( command ); 
-  sprintf( command, "afplay %s ", "output.mp3" );
-  status = system( command ); 
-  status = system( "clear" ); 
     return status; 
 }
 
@@ -56,7 +51,6 @@ int main()
 	remote_server.sin_family = AF_INET;
 	remote_server.sin_port = htons(110);
 	remote_server.sin_addr.s_addr = INADDR_ANY;
-	//remote_server.sin_addr.s_addr = inet_addr("192.168.43.27");
 	bzero(&remote_server.sin_zero,8);
 
 	if((connect(sock, (struct sockaddr *)&remote_server, sizeof(struct sockaddr_in))) == ERROR)
@@ -71,14 +65,13 @@ int main()
 		while(data_len)
 		{
 		data_len=recv(sock, mesg, 10000, 0);
-		bool skip = 0;
 
 
 		
 		if(mesg[0]=='L' && mesg[1]=='E'&& mesg[2]=='N' && mesg[3]=='H')
-			{flag=0;skip=1;}
+			flag=0;
 		if(mesg[0]=='L' && mesg[1]=='E'&& mesg[2]=='N' && mesg[3]=='E')
-			{flag=1;skip=1;}
+			flag=1;
 
 		
 		// flag=0 for hindi
@@ -101,7 +94,7 @@ int main()
 							memset(word,0,sizeof(word));
         				int i = 0, j = 0;
 
-        				if (flag==1 && !skip)
+        				if (flag==1)
         				{
         					int kd=0,jj=0;
         					while (mesg[kd] != '\0')
@@ -117,7 +110,7 @@ int main()
 
         				}
 
-					while (mesg[i] != '\0' && flag==0 && !skip) {
+					while (mesg[i] != '\0' && flag==0) {
 						
 					
                 if (((mesg[i] == ' ') && (flag ==0))) {
