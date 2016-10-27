@@ -23,13 +23,14 @@ int playSound( char *filename )
 int playSound2( char *filename ) 
 { char command[256]; int status; 
  /* create command to execute */ 
+	printf("%s\n",filename);
 	printf("Processing\n");
  sprintf( command, "wget -q -U Mozilla -O output.mp3 'http://translate.google.com/translate_tts?client=tw-ob&q=%s&tl=En' ", filename );
 
    /* play sound */ status = system( command ); 
-  sprintf( command, "afplay %s", "output.mp3" );
+  sprintf( command, "afplay %s -r .8", "output.mp3" );
   status = system( command ); 
-  status = system( "clear" ); 
+  //status = system( "clear" ); 
     return status; 
 }
 
@@ -80,8 +81,8 @@ struct sockaddr_in {
 
 	remote_server.sin_family = AF_INET;
 	remote_server.sin_port = htons(110);
-	//remote_server.sin_addr.s_addr = INADDR_ANY;
-	remote_server.sin_addr.s_addr = inet_addr("172.20.10.13");
+	remote_server.sin_addr.s_addr = INADDR_ANY;
+	//remote_server.sin_addr.s_addr = inet_addr("172.20.10.13");
 	bzero(&remote_server.sin_zero,8);
 
 	if((connect(sock, (struct sockaddr *)&remote_server, sizeof(struct sockaddr_in))) == ERROR)
@@ -122,7 +123,7 @@ struct sockaddr_in {
 					
 					//
 
-						char word[256];
+						char word[500];
 							memset(word,0,sizeof(word));
         				int i = 0, j = 0;
 
@@ -134,9 +135,18 @@ struct sockaddr_in {
         						word[jj]=mesg[kd];
         						if(mesg[kd]==' ')
         							word[jj]='+';
-        						kd++;jj++;
+        					
+        						if(jj>50 && mesg[kd]==' ')
+        						{
+        					printf("Google string:%s\n",word);
+        					int a=playSound2(word);
+        				//	memset(word,0,sizeof(word[0])*500);
+        					jj=0;
+        						}
+        						else
+        								kd++;jj++;
         					}
-        					printf("google string%s\n",word);
+        					printf("Google stringnew:%s\n",word);
         					playSound2(word);
         					
 

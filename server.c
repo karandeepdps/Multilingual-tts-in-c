@@ -207,12 +207,12 @@ whichever comes first. This facility is declared in the header file sys/types.h.
             printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(server.sin_addr) , ntohs(server.sin_port));
         
             //send new connection greeting message
-            if( send(new_socket, message, strlen(message), 0) != strlen(message) ) 
-            {
-                perror("send");
-            }
+         //   if( send(new_socket, message, strlen(message), 0) != strlen(message) ) 
+          //  {
+            //    perror("send");
+            //}
               
-            puts("Welcome message sent successfully");
+           // puts("Welcome message sent successfully");
               
             //add new socket to array of sockets
             for (i = 0; i < max_clients; i++) 
@@ -228,6 +228,7 @@ whichever comes first. This facility is declared in the header file sys/types.h.
             }
         }
         
+
             printf("What you want to do\n");
             printf("1) Send Message\n");
             printf("2) List Speakers\n");
@@ -322,27 +323,202 @@ whichever comes first. This facility is declared in the header file sys/types.h.
                 
               if(client_socket[num]>0){
                 printf("Selected client is %d\n",num);
+//
+                int choice;
 
-                char senditbro[1000],trainno[100];
+  printf("Enter 1 for hindi 2 for English\n");
+  scanf("%d",&choice);
 
-          printf("Enter Train No\n");
-          scanf("%[^\n]s",trainno);
+  if(choice==1)
+{
+char trainno[10];
+
+memset(input,0,sizeof(input[0])*BUFFER);
+input[0]='L';input[1]='E';input[2]='N';input[3]='H';
+ send(sd , input , strlen(input) , 0 );
+
+  printf("Enter 5 digit Train No\n");
+
+scanf("%s",trainno);
 
 
-      //        int count=0;
-        //      while(trainno[count]!='\0')
-          //      count++;
-                
-                printf("%c %c %c %c %c \n",trainno[0],trainno[1],trainno[2],trainno[3],trainno[4]);
+
+  
+  
+
+char mesgtosend[300];
+
+mesgtosend[0]='1';
+mesgtosend[1]='a';
+mesgtosend[2]=' ';
+mesgtosend[3]=trainno[0];
+mesgtosend[4]=' ';
+mesgtosend[5]=trainno[1];
+mesgtosend[6]=' ';
+mesgtosend[7]=trainno[2];
+mesgtosend[8]=' ';
+mesgtosend[9]=trainno[3];
+mesgtosend[10]=' ';
+mesgtosend[11]=trainno[4];
+mesgtosend[12]=' ';
+
+
+printf("%s\n",mesgtosend);
+
+printf("Enter from city\n");
+
+char city[30];
+scanf("%s",city);
+
+int count=0;
+while(city[count]!='\0')
+  count++;
+
+
+
+
+int i;
+for(i = 0;i<count;i++)
+{
+  mesgtosend[i+13]=city[i];
+  //printf("hi\n");
+}
+
+
+mesgtosend[i+13]=' ';
+mesgtosend[i+14]='s';
+mesgtosend[i+15]='e';
+mesgtosend[i+16]=' ';
+
+printf("Enter to city\n");
+
+char cityto[30];
+scanf("%s",cityto);
+
+count=0;
+while(cityto[count]!='\0')
+  count++;
+
+int j;
+for(j = 0;j<count;j++)
+{
+  mesgtosend[j+i+17]=cityto[j];
+  //printf("hi\n");
+}
+
+mesgtosend[j+i+17]=' ';
+mesgtosend[j+i+18]='p';
+mesgtosend[j+i+19]='n';
+mesgtosend[j+i+20]=' ';
+
+printf("Enter platform no\n");
+
+char platform[30];
+scanf("%s",platform);
+
+mesgtosend[j+i+21]=platform[0];
+mesgtosend[j+i+22]=' ';
+mesgtosend[j+i+23]='p';
+mesgtosend[j+i+24]='a';
+mesgtosend[j+i+25]='\n';
+
+
+
+printf("%s\n",mesgtosend);
+
+send(sd , mesgtosend , strlen(mesgtosend) , 0 );
+}
+else
+{
+
+memset(input,0,sizeof(input[0])*BUFFER);
+input[0]='L';input[1]='E';input[2]='N';input[3]='E';
+ send(sd , input , strlen(input) , 0 );
+
+char mesgtosend[300]="please pay attention that train no ";
+
+char trainno[10];
+
+  printf("Enter 5 digit Train No\n");
+
+scanf("%s",trainno);
+
+mesgtosend[35]=trainno[0];mesgtosend[36]=' ';
+mesgtosend[37]=trainno[1];mesgtosend[38]=' ';
+mesgtosend[39]=trainno[2];mesgtosend[40]=' ';
+mesgtosend[41]=trainno[3];mesgtosend[42]=' ';
+mesgtosend[43]=trainno[4];mesgtosend[44]=' ';
+
+
+strcat(mesgtosend," coming from ");
+
+
+
+printf("Enter from city\n");
+
+char city[30];
+scanf("%s",city);
+
+int count=0;
+while(city[count]!='\0')
+  count++;
+
+
+
+
+int i;
+for(i = 0;i<count;i++)
+{
+  mesgtosend[i+58]=city[i];
+  //printf("hi\n");
+}
+
+strcat(mesgtosend," going to city ");
+
+
+printf("Enter to city\n");
+
+char cityto[30];
+scanf("%s",cityto);
+
+count=0;
+while(cityto[count]!='\0')
+  count++;
+
+int j;
+for(j = 0;j<count;j++)
+{
+  mesgtosend[j+i+73]=cityto[j];
+  //printf("hi\n");
+}
+
+
+
+char src[50], dest[50];
+
+   strcpy(src,  " is arriving on platform number ");
+  
+
+   strcat(mesgtosend, src);
+
+   printf("Enter platform no\n");
+
+char platform[30];
+scanf("%s",platform);
+
+strcat(mesgtosend, platform);
+
+strcat(mesgtosend," ");
+printf("%s\n",mesgtosend);
+send(sd , mesgtosend , strlen(mesgtosend) , 0 );
+
+
+
+
+}
+                //
                    
-                 //   fgets(input,BUFFER,stdin);
-                  //printf("%c\n",input[0]);
-                    //printf("%c\n",input[1]);
-                    //printf("2=%c\n",input[2]);
-                    //printf("3=%c\n",input[3]);
-                   //printf("strlen==%lu\n",strlen(input));
-                   
-                    send(sd , input , strlen(input) , 0 );
+                    
                 }
               system("clear");        
 
