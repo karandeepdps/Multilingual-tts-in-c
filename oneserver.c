@@ -70,8 +70,10 @@ int yes=1;
         exit(EXIT_FAILURE);
     }
 
+//SOL_SOCKET is the socket layer itself.
 
-        //AF_INET (IPv4) or AF_INET6 (IPv6)
+        //AF_INET (IPv4) or AF_INET6 (IPv6)  Internet Protocol version 4 (IPv4) is the fourth version of the Internet Protocol (IP)
+    // TCP almost always uses SOCK_STREAM and UDP uses SOCK_DGRAM
       //struct sockaddr {
      // unsigned short    sa_family;    // address family, AF_xxx
      //  char              sa_data[14];  // 14 bytes of protocol address
@@ -93,9 +95,10 @@ struct sockaddr_in {
 };
 */
 
-	server.sin_family = AF_INET;
-	server.sin_port   = htons(110);
+	server.sin_family = AF_INET;//AF_INET (IPv4) or AF_INET6 (IPv6)
+	server.sin_port   = htons(110);//host to network short
 	server.sin_addr.s_addr = INADDR_ANY;
+	//server.sin_addr.s_addr = inet_addr("192.168.43.27");
 	bzero(&server.sin_zero, 8);
 
 	len = sizeof(struct sockaddr_in);

@@ -15,7 +15,7 @@ int flag =0;
 int playSound( char *filename ) 
 { char command[256]; int status; 
  /* create command to execute */ 
- sprintf( command, "afplay %s -r 10", filename );
+ sprintf( command, "afplay %s -r 1.1", filename );
    /* play sound */ status = system( command ); 
     return status; 
 }
@@ -27,7 +27,7 @@ int playSound2( char *filename )
  sprintf( command, "wget -q -U Mozilla -O output.mp3 'http://translate.google.com/translate_tts?client=tw-ob&q=%s&tl=En' ", filename );
 
    /* play sound */ status = system( command ); 
-  sprintf( command, "afplay %s ", "output.mp3" );
+  sprintf( command, "afplay %s", "output.mp3" );
   status = system( command ); 
   status = system( "clear" ); 
     return status; 
@@ -53,10 +53,35 @@ int main()
 		exit(-1);
 	}
 
+	//SOL_SOCKET is the socket layer itself.
+
+        //AF_INET (IPv4) or AF_INET6 (IPv6)  Internet Protocol version 4 (IPv4) is the fourth version of the Internet Protocol (IP)
+    // TCP almost always uses SOCK_STREAM and UDP uses SOCK_DGRAM
+      //struct sockaddr {
+     // unsigned short    sa_family;    // address family, AF_xxx
+     //  char              sa_data[14];  // 14 bytes of protocol address
+    //};
+
+/*
+sa_family can be a variety of things, but it'll be AF_INET (IPv4) or AF_INET6 (IPv6) for everything we do in this document.
+ sa_data contains a destination address and port number for the socket. This is rather unwieldy since you don't want to 
+ tediously pack the address in the sa_data by hand.
+To deal with struct sockaddr, programmers created a parallel structure: 
+struct sockaddr_in (“in” for “Internet”) to be used with IPv4.
+And this is the important bit: a pointer to a struct sockaddr_in can be cast to a pointer to a struct sockaddr and vice-versa. 
+So even though connect() wants a struct sockaddr*, you can still use a struct sockaddr_in and cast it at the last minute!
+struct sockaddr_in {
+    short int          sin_family;  // Address family, AF_INET
+    unsigned short int sin_port;    // Port number
+    struct in_addr     sin_addr;    // Internet address
+    unsigned char      sin_zero[8]; // Same size as struct sockaddr
+};
+*/
+
 	remote_server.sin_family = AF_INET;
 	remote_server.sin_port = htons(110);
-	remote_server.sin_addr.s_addr = INADDR_ANY;
-	//remote_server.sin_addr.s_addr = inet_addr("192.168.43.27");
+	//remote_server.sin_addr.s_addr = INADDR_ANY;
+	remote_server.sin_addr.s_addr = inet_addr("172.20.10.13");
 	bzero(&remote_server.sin_zero,8);
 
 	if((connect(sock, (struct sockaddr *)&remote_server, sizeof(struct sockaddr_in))) == ERROR)
@@ -71,7 +96,7 @@ int main()
 		while(data_len)
 		{
 		data_len=recv(sock, mesg, 10000, 0);
-		bool skip = 0;
+		int skip = 0;
 
 
 		

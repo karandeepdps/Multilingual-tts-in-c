@@ -232,6 +232,9 @@ whichever comes first. This facility is declared in the header file sys/types.h.
             printf("1) Send Message\n");
             printf("2) List Speakers\n");
             printf("3) Change Language\n");
+            printf("4) Train Arrival Annoucement\n");
+            printf("5) Train Departure Annoucement\n");
+
             int in;
             scanf("%d",&in);
             if(in==1)
@@ -275,7 +278,7 @@ whichever comes first. This facility is declared in the header file sys/types.h.
                       
               		}
  				}
- 				 system("clear");
+ 				
 
  			}
 
@@ -308,7 +311,52 @@ whichever comes first. This facility is declared in the header file sys/types.h.
 
  			}
 
-		
+                                    		  else if(in==4)
+                                      {
+                                printf("Enter Speaker no\n");
+                                int num;
+                                scanf("%d",&num);
+             sd = client_socket[num];
+             
+             // fgets cause loop to skip input string on first iteration
+                
+              if(client_socket[num]>0){
+                printf("Selected client is %d\n",num);
+
+                char senditbro[1000],trainno[100];
+
+          printf("Enter Train No\n");
+          scanf("%[^\n]s",trainno);
+
+
+      //        int count=0;
+        //      while(trainno[count]!='\0')
+          //      count++;
+                
+                printf("%c %c %c %c %c \n",trainno[0],trainno[1],trainno[2],trainno[3],trainno[4]);
+                   
+                 //   fgets(input,BUFFER,stdin);
+                  //printf("%c\n",input[0]);
+                    //printf("%c\n",input[1]);
+                    //printf("2=%c\n",input[2]);
+                    //printf("3=%c\n",input[3]);
+                   //printf("strlen==%lu\n",strlen(input));
+                   
+                    send(sd , input , strlen(input) , 0 );
+                }
+              system("clear");        
+
+
+
+                                      }
+                                      else if(in==5)
+                                      {
+
+
+
+
+                                      }
+
 
 	}
 
