@@ -79,7 +79,7 @@ struct sockaddr_in {
 */
 
 	remote_server.sin_family = AF_INET;
-	remote_server.sin_port = htons(110);
+	remote_server.sin_port = htons(112);
 	remote_server.sin_addr.s_addr = INADDR_ANY;
 	//remote_server.sin_addr.s_addr = inet_addr("172.20.10.13");
 	bzero(&remote_server.sin_zero,8);

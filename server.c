@@ -22,6 +22,8 @@
 
 #define BUFFER 1024
 
+char platformindex[100];
+
 int main()
 {
 	char aa[500];
@@ -98,7 +100,7 @@ struct sockaddr_in {
 */
 
 	server.sin_family = AF_INET;
-	server.sin_port   = htons(110);
+	server.sin_port   = htons(112);
 	server.sin_addr.s_addr = INADDR_ANY;
 	bzero(&server.sin_zero, 8);
 
@@ -221,7 +223,9 @@ whichever comes first. This facility is declared in the header file sys/types.h.
                 if( client_socket[i] == 0 )
                 {
                     client_socket[i] = new_socket;
-                    printf("Adding to list of sockets as %d\n" , i);
+                    // printf("Adding to list of sockets as %d\n" , i);
+                    // printf("Enter Platform no for this speaker\n");
+                    // scanf("%c",&platformindex[i]);
                      
                     break;
                 }
@@ -275,7 +279,7 @@ whichever comes first. This facility is declared in the header file sys/types.h.
  					{
  						sd = client_socket[i];
  					getpeername(sd , (struct sockaddr*)&server , (socklen_t*)&addrlen);
-                    printf("Speaket at , ip %s , port %d \n" , inet_ntoa(server.sin_addr) , ntohs(server.sin_port));
+                    printf("Speaket at %c, ip %s , port %d \n" , platformindex[i],inet_ntoa(server.sin_addr) , ntohs(server.sin_port));
                       
               		}
  				}
@@ -420,7 +424,8 @@ mesgtosend[j+i+21]=platform[0];
 mesgtosend[j+i+22]=' ';
 mesgtosend[j+i+23]='p';
 mesgtosend[j+i+24]='a';
-mesgtosend[j+i+25]='\n';
+mesgtosend[j+i+25]=' ';
+mesgtosend[j+i+26]='\n';
 
 
 
@@ -511,7 +516,7 @@ strcat(mesgtosend, platform);
 strcat(mesgtosend," ");
 printf("%s\n",mesgtosend);
 send(sd , mesgtosend , strlen(mesgtosend) , 0 );
-
+   memset(mesgtosend,0,sizeof(mesgtosend[0])*300);
 
 
 
@@ -527,7 +532,215 @@ send(sd , mesgtosend , strlen(mesgtosend) , 0 );
                                       }
                                       else if(in==5)
                                       {
+ printf("Enter Speaker no\n");
+                                int num;
+                                scanf("%d",&num);
+             sd = client_socket[num];
+             
+             // fgets cause loop to skip input string on first iteration
+                
+              if(client_socket[num]>0){
+                printf("Selected client is %d\n",num);
+//
+                int choice;
 
+  printf("Enter 1 for hindi 2 for English\n");
+  scanf("%d",&choice);
+
+  if(choice==1)
+{
+char trainno[10];
+
+memset(input,0,sizeof(input[0])*BUFFER);
+input[0]='L';input[1]='E';input[2]='N';input[3]='H';
+ send(sd , input , strlen(input) , 0 );
+
+  printf("Enter 5 digit Train No\n");
+
+scanf("%s",trainno);
+
+
+
+  
+  
+
+char mesgtosend[300];
+
+mesgtosend[0]='1';
+mesgtosend[1]='a';
+mesgtosend[2]=' ';
+mesgtosend[3]=trainno[0];
+mesgtosend[4]=' ';
+mesgtosend[5]=trainno[1];
+mesgtosend[6]=' ';
+mesgtosend[7]=trainno[2];
+mesgtosend[8]=' ';
+mesgtosend[9]=trainno[3];
+mesgtosend[10]=' ';
+mesgtosend[11]=trainno[4];
+mesgtosend[12]=' ';
+
+
+printf("%s\n",mesgtosend);
+
+printf("Enter from city\n");
+
+char city[30];
+scanf("%s",city);
+
+int count=0;
+while(city[count]!='\0')
+  count++;
+
+
+
+
+int i;
+for(i = 0;i<count;i++)
+{
+  mesgtosend[i+13]=city[i];
+  //printf("hi\n");
+}
+
+
+mesgtosend[i+13]=' ';
+mesgtosend[i+14]='s';
+mesgtosend[i+15]='e';
+mesgtosend[i+16]=' ';
+
+printf("Enter to city\n");
+
+char cityto[30];
+scanf("%s",cityto);
+
+count=0;
+while(cityto[count]!='\0')
+  count++;
+
+int j;
+for(j = 0;j<count;j++)
+{
+  mesgtosend[j+i+17]=cityto[j];
+  //printf("hi\n");
+}
+
+mesgtosend[j+i+17]=' ';
+mesgtosend[j+i+18]='p';
+mesgtosend[j+i+19]='n';
+mesgtosend[j+i+20]=' ';
+
+printf("Enter platform no\n");
+
+char platform[30];
+scanf("%s",platform);
+
+mesgtosend[j+i+21]=platform[0];
+mesgtosend[j+i+22]=' ';
+mesgtosend[j+i+23]='s';
+mesgtosend[j+i+24]='j';
+mesgtosend[j+i+25]=' ';
+mesgtosend[j+i+26]='\n';
+
+
+
+printf("%s\n",mesgtosend);
+
+send(sd , mesgtosend , strlen(mesgtosend) , 0 );
+}
+else
+{
+
+memset(input,0,sizeof(input[0])*BUFFER);
+input[0]='L';input[1]='E';input[2]='N';input[3]='E';
+ send(sd , input , strlen(input) , 0 );
+
+char mesgtosend[300]="please pay attention that train no ";
+
+char trainno[10];
+
+  printf("Enter 5 digit Train No\n");
+
+scanf("%s",trainno);
+
+mesgtosend[35]=trainno[0];mesgtosend[36]=' ';
+mesgtosend[37]=trainno[1];mesgtosend[38]=' ';
+mesgtosend[39]=trainno[2];mesgtosend[40]=' ';
+mesgtosend[41]=trainno[3];mesgtosend[42]=' ';
+mesgtosend[43]=trainno[4];mesgtosend[44]=' ';
+
+
+strcat(mesgtosend," coming from ");
+
+
+
+printf("Enter from city\n");
+
+char city[30];
+scanf("%s",city);
+
+int count=0;
+while(city[count]!='\0')
+  count++;
+
+
+
+
+int i;
+for(i = 0;i<count;i++)
+{
+  mesgtosend[i+58]=city[i];
+  //printf("hi\n");
+}
+
+strcat(mesgtosend," going to city ");
+
+
+printf("Enter to city\n");
+
+char cityto[30];
+scanf("%s",cityto);
+
+count=0;
+while(cityto[count]!='\0')
+  count++;
+
+int j;
+for(j = 0;j<count;j++)
+{
+  mesgtosend[j+i+73]=cityto[j];
+  //printf("hi\n");
+}
+
+
+
+char src[50], dest[50];
+
+   strcpy(src,  " is leaving from platform number ");
+  
+
+   strcat(mesgtosend, src);
+
+   printf("Enter platform no\n");
+
+char platform[30];
+scanf("%s",platform);
+
+strcat(mesgtosend, platform);
+
+strcat(mesgtosend," ");
+printf("%s\n",mesgtosend);
+send(sd , mesgtosend , strlen(mesgtosend) , 0 );
+   memset(mesgtosend,0,sizeof(mesgtosend[0])*300);
+
+
+
+
+}
+                //
+                   
+                    
+                }
+              system("clear");        
 
 
 

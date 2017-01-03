@@ -94,7 +94,7 @@ scanf("%s",platform);
 mesgtosend[j+i+21]=platform[0];
 mesgtosend[j+i+22]=' ';
 mesgtosend[j+i+23]='p';
-mesgtosend[j+i+24]='a';
+mesgtosend[j+i+24]='j';
 mesgtosend[j+i+25]='\n';
 
 
@@ -166,7 +166,7 @@ for(j = 0;j<count;j++)
 
 char src[50], dest[50];
 
-   strcpy(src,  " is arriving on platform no");
+   strcpy(src,  " is leaving from platform no");
   
 
    strcat(mesgtosend, src);
@@ -190,4 +190,4 @@ printf("%s\n",mesgtosend);
 }
 
 
-//1a=yatrigan kirpaya dyan de gadi number [1 2 3] [city] se [city] platform no [1] pe arri hae; 
+//1a=yatrigan kirpaya dyan de gadi number [1 2 3] [city] se [city] platform no [1] se jarri hae; 
