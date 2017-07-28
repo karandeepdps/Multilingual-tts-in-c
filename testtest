@@ -1,50 +1,57 @@
-##rcmc
-# This function is used to correct range cell migration.
+from __future__ import division
+import numpy as np
+import math
+import time
+from matplotlib import pylab as plt
+import os, sys
+import chirp
+import azimuth_ref
+import range_compress,centroid,rcmc
+import image
+from scipy.fftpack import fft, ifft
 
-fftlen_az=2048
-del_sr =7.9049
-temp2=np.array(range(2048)).reshape((1, 2048))
-temp2=np.transpose(temp2)
-temp2=temp2*(prf/validAzPts)
-frequency_shift=(temp2+dopp)
-#print(frequency_shift,frequency_shift.shape[0],frequency_shift.shape[1])
-
-temp3=np.array(range(4912)).reshape((1, 4912))
-temp3=np.multiply(temp3,del_sr)
-temp3=temp3+ro
-#print(temp3,"asd")
-
-x=(2*vEff)
-y=(_lambda*frequency_shift/ x )
-z=np.power(y,2)
-s=np.sqrt(1-z)
-f=np.divide(1,s)
-offset = np.multiply((f - 1),temp3)
-
-offset = np.round(offset/del_sr)  # pixels offset
-#print(offset)
-#print(offset.shape[0],offset.shape[1])
-
-asd=np.array(range(1,2048*4912+1)).reshape((4912, 2048))
-asd=np.transpose(asd)
-ind = offset * 2048;
-#print(np.add(asd,ind))
-ind=np.add(asd,ind)
-ind=ind.astype(int)
-#print("asd",ind)
-z = np.zeros((data.shape[0],1))
-data=np.append(data, z, axis=1)
-#print (data)
-for i in range(0,ind.shape[0]):
-    for j in range(0,ind.shape[1]):
+def rcmc(data=None, doppler=None, _lambda=None, prf=None, vEff=None, ro=None, del_sr=None, validAzPts=None):
+    # data : range compressed data in range doppler domain
+    # doppler : doppler centroid frequency
+    # lambda : wavelength
+    # prf : pulse repetition frequency
+    # vEff : effective velocity of sensor
+    # ro : near slant range
+    # delta_sr : range pixel spacing
+    # ValidAzPts : no. of azimuth line in a aperture
+    nValid = 4912
+    fftlen_az = 2048
+    temp2=np.array(range(2048)).reshape((1, 2048))
+    temp2=np.transpose(temp2)
+    temp2=temp2*(prf/validAzPts)
+    frequency_shift=(temp2+doppler)
+    temp3=np.array(range(4912)).reshape((1, 4912))
+    temp3=np.multiply(temp3,del_sr)
+    temp3=temp3+ro
+    x=(2*vEff)
+    y=(_lambda*frequency_shift/ x )
+    z=np.power(y,2)
+    s=np.sqrt(1-z)
+    f=np.divide(1,s)
+    offset = np.multiply((f - 1),temp3)
+    offset = np.round(offset/del_sr)  # pixels offset
+    asd=np.array(range(1,2048*4912+1)).reshape((4912, 2048))
+    asd=np.transpose(asd)
+    ind = offset * 2048;
+    #print(np.add(asd,ind))
+    ind=np.add(asd,ind)
+    ind=ind.astype(int)
+    z = np.zeros((data.shape[0],1))
+    data=np.append(data, z, axis=1)
+    print(ind.shape[0])
+    for i in range(0,ind.shape[0]):
+        for j in range(0,ind.shape[1]):
         
-        if(ind[i][j]>=nValid*fftlen_az):
-            ind[i][j]=(nValid)*fftlen_az;
-        #if(int(math.floor((ind[i][j])/2048))>=4912):
-            #print(i,j,(ind[i][j]))
-        #print(int((ind[i][j]-1)%2048),int(math.floor((ind[i][j])/2048)))
-        data[i][j]=data[int((ind[i][j]-1)%2048),int(math.floor((ind[i][j])/2048))]
-
-
-data=np.delete(data, -1, 1)
-print(data)
+            if(ind[i][j]>=nValid*fftlen_az):
+                ind[i][j]=(nValid)*fftlen_az;
+            #if(int(math.floor((ind[i][j])/2048))>=4912):
+               # print(i,j,(ind[i][j]))
+            #print(int((ind[i][j]-1)%2048),int(math.floor((ind[i][j])/2048)))
+            data[i][j]=data[int((ind[i][j]-1)%2048),int(math.floor((ind[i][j])/2048))]
+    data=np.delete(data, -1, 1)
+    return data
