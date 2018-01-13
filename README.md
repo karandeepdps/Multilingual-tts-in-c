@@ -7,6 +7,11 @@ This is a simple client and server socket based model which uses google tts for 
 audio clips for hindi annoucements.
 
 
+## How to run
+Compile server and clientp using c++ compiler.
+Run server and then connect clients.
+
+Make sure you have a working internet.
 
 
 ## License & copyright
